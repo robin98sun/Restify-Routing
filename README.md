@@ -23,5 +23,6 @@ Quick Start
     // this will add restify native route map '/user/:username'
     rootRouter.use('/user', subRouter)
 
+```
 This module is used in `Goyoo OEM` project right now, please feel free to post issues and merge requests. 
 Enjoy.
