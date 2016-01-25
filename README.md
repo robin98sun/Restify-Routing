@@ -7,6 +7,9 @@ Quick Start
 -----------
 ```javascript
 var server = require('restify').createServer({})
+server.use(restify.queryParser());
+server.use(restify.bodyParser({mapParams: false}));
+
 var RestifyRouter = require('restify-routing')
 var rootRouter = new RestifyRouter(server)
 rootRouter.get('/', function(req, res){
@@ -23,6 +26,7 @@ subRouter.get('/:username', function(req, res){
 // this will add restify native route map '/user/:username'
 rootRouter.use('/user', subRouter)
 
+server.listen(3000)
 ```
 This module is used in `Goyoo OEM` project right now, please feel free to post issues and merge requests. 
 Enjoy.
