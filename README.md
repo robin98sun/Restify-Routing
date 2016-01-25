@@ -5,6 +5,7 @@ Nested routers can help us to separate a big routing map into well structured pi
 
 Quick Start
 -----------
+    ```javascript
     var server = require('restify').createServer({})
     var RestifyRouter = require('restify-routing')
     var rootRouter = new RestifyRouter(server)
