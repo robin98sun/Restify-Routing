@@ -1,0 +1,26 @@
+{
+  "name": "restify-routing",
+  "version": "0.1.0",
+  "description": "Nested routing for Restify",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lyalls/Restify-Routing.git"
+  },
+  "keywords": [
+    "route",
+    "routing",
+    "router",
+    "restify",
+    "nested"
+  ],
+  "author": "Lyall Sun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lyalls/Restify-Routing/issues"
+  },
+  "homepage": "https://github.com/lyalls/Restify-Routing#readme"
+}
