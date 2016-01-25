@@ -8,7 +8,7 @@ Quick Start
 ```javascript
 var server = require('restify').createServer({serverName: 'Routing Sample', serverVersion: '0.1.0'})
 server.use(restify.queryParser());
-server.use(restify.bodyParser({mapParams: false}));
+server.use(restify.bodyParser());
 
 var RestifyRouter = require('restify-routing')
 var rootRouter = new RestifyRouter(server)
