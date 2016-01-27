@@ -17,7 +17,8 @@ var routerPrototype = {
     },
     setChildrenServer(server){
         if(!this.children)return;
-        for(var child of this.children){
+        for(var i = 0; i<this.children.length; i++){
+           var child = this.children[i];
            child.server = server;
            child.setChildrenServer(server);
         }
@@ -25,14 +26,16 @@ var routerPrototype = {
     activeAll(){
         this.activeAllPaths();
         if(!this.children)return;
-        for(var child of this.children){
+        for(var i = 0; i<this.children.length; i++){
+           var child = this.children[i];
             child.activeAll();
         }
     },
     activeAllPaths(){
         if(!this.server) return;
         if(this.actions){
-            for(var param of this.actions) {
+            for(var i=0; i<this.actions.length; i++) {
+                var param = this.actions[i];
                 this.active(param.method, param.path, param.callback);
             }
         }
