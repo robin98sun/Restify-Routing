@@ -58,7 +58,12 @@ var routerPrototype = {
     }
 };
 
-for(var method of legalMethods){
+for(var i=0; i< legalMethods.length; i++){
+    var method = legalMethods[i]; 
+    setMethod(method);
+}
+
+function setMethod(method){
     var restifyMethod = method;
     if(method==='delete') restifyMethod = 'del';
     routerPrototype[method] = function(path, cb){
