@@ -6,9 +6,11 @@ Nested routers can help us to separate a big routing map into well structured pi
 Quick Start
 -----------
 ```javascript
-var server = require('restify').createServer({serverName: 'Routing Sample', serverVersion: '0.1.0'})
-server.use(restify.queryParser());
-server.use(restify.bodyParser());
+var restify = require('restify'),
+    server = restify.createServer({serverName: "Test restify-routing", serverVersion: "0.1.0"})
+
+server.use(restify.queryParser())
+server.use(restify.bodyParser())
 
 var RestifyRouter = require('restify-routing')
 var rootRouter = new RestifyRouter(server)
@@ -28,5 +30,9 @@ rootRouter.use('/user', subRouter)
 
 server.listen(3000)
 ```
+
+You can also try the `climbPathTree` method to define and generate the whole routing map in one pass,
+which is illustrated in the file `tests/index.js`
+
 This module is used in `Goyoo OEM` project right now, please feel free to post issues and merge requests. 
 Enjoy.

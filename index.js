@@ -15,6 +15,13 @@ var routerPrototype = {
             subRouter.activeAll();
         }
     },
+    setServer(server){
+        this.server = server;
+        this.setChildrenServer(server);
+        if(this.server){
+            this.activeAll();
+        }
+    },
     setChildrenServer(server){
         if(!this.children)return;
         for(var i = 0; i<this.children.length; i++){
@@ -43,6 +50,7 @@ var routerPrototype = {
     active(method, path, cb){
         if(!this.server || !path || !cb) return;
         var p = (this.fullPath()+path).replace(/\/\//g, '/');
+        if(p.length > 1 && p.substr(p.length-1) === '/') p= p.substr(0, p.length-1)
         this.server[method](p, cb);
 
         var m = method.toUpperCase();
@@ -89,5 +97,24 @@ function Router(serverInstance) {
 }
 
 Router.prototype = routerPrototype;
+
+Router.climbPathTree = function climbPathTree (tree, path){
+    if(!tree)return null;
+    var treePath = path || '/';
+    var router = new Router();
+    if(tree.allowedMethods){
+        for(var method in tree.allowedMethods){
+            if(typeof tree.allowedMethods[method] === 'function')
+                router[method](treePath, tree.allowedMethods[method]);
+        }
+    }
+    if(tree.subPaths){
+        for(var subPath in tree.subPaths){
+            var subRouter = climbPathTree(tree.subPaths[subPath]);
+            if(subRouter) router.use('/'+subPath, subRouter);
+        }
+    }
+    return router;
+}
 
 module.exports = Router;
