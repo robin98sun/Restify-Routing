@@ -1,5 +1,5 @@
 'use strict'
-var request = require('supertest'),
+const request = require('supertest'),
     Router = require('../index'),
     restify = require('restify'),
     server = restify.createServer({serverName: "Test restify-routing", serverVersion: "0.1.0"})
@@ -7,10 +7,16 @@ var request = require('supertest'),
 server.use(restify.queryParser())
 server.use(restify.bodyParser())
 
-function fakeController (req, res){
-    res.send(200, req.url)
+function preCheckForAllMethods(req, res, next){
+    req.count = (req.count)?req.count+1:1;
+    return next()
 }
-var pathTree = {
+
+function fakeController (req, res){
+    req.count = (req.count)?req.count+1:1;
+    res.send(200, {count: req.count, path: req.route.path})
+}
+let pathTree = {
     subPaths:{
         user: {
             subPaths:{
@@ -28,6 +34,7 @@ var pathTree = {
         service: {
             subPaths: {
                 orderSeat: {
+                    all : [ preCheckForAllMethods, preCheckForAllMethods ],
                     allowedMethods: {
                         put : fakeController
                     },
@@ -75,7 +82,7 @@ var pathTree = {
     }
 }
 
-var router = Router.climbPathTree(pathTree)
+let router = Router.climbPathTree(pathTree)
 router.setServer(server)
 
 //server.listen(3000)
@@ -83,23 +90,35 @@ router.setServer(server)
 // Test the path tree
 function shootFruits(tree, path){
     if(!tree)return;
-    var fruitPath = path || '/';
+    let fruitPath = path || '/';
+
     if(tree.allowedMethods){
-        for(var method in tree.allowedMethods){
+        for(let method in tree.allowedMethods){
             if(typeof tree.allowedMethods[method] === 'function') {
-                var pathInstance =  fruitPath.replace(/:[a-zA-Z0-9]+/g, Math.random())
+                let pathInstance =  fruitPath.replace(/:[a-zA-Z0-9]+/g, Math.random())
                 request(server)[method]( pathInstance)
                     .expect(200)
                     .end(function(err, res){
                         if(err) throw err;
-                        else console.log('Pass: '+method.toUpperCase(), pathInstance )
+                        else {
+                            let expectedCount = 1;
+                            if(tree.all){
+                                if(typeof tree.all === 'function') expectedCount += 1;
+                                else expectedCount+=tree.all.length;
+                            }
+                            if(res.body.count != expectedCount){
+                                throw new Error('Routing did NOT go through the *all* method first, ' +
+                                    'expected response value is '+ expectedCount +', but actual response is ' +
+                                    res.body.count)
+                            }
+                        }
                     })
             }
         }
     }
     if(tree.subPaths){
-        for(var subPath in tree.subPaths){
-            var targetPath = fruitPath + '/' + subPath;
+        for(let subPath in tree.subPaths){
+            let targetPath = fruitPath + '/' + subPath;
             shootFruits(tree.subPaths[subPath], targetPath.replace(/\/\//g, '/'));
         }
     }
