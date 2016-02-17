@@ -4,7 +4,7 @@
   "description": "Nested routing for Restify",
   "main": "index.js",
   "scripts": {
-    "test": "node tests/index"
+    "test": "mocha tests/index"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,8 @@
     "restify": "^4.0.0"
   },
   "devDependencies": {
+    "mocha": "^2.4.5",
+    "should": "^8.2.2",
     "supertest": "^1.1.0"
   },
   "engine": "node >= 4.0.0"
