@@ -1,6 +1,6 @@
 {
   "name": "restify-routing",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "Nested routing for Restify",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/lyalls/Restify-Routing#readme",
   "dependencies": {
-    "restify": "4.x"
+    "restify": "*"
   },
   "devDependencies": {
     "mocha": "^2.4.5",
