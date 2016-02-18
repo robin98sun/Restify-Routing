@@ -13,7 +13,7 @@ server.use(restify.queryParser())
 server.use(restify.bodyParser())
 
 var RestifyRouter = require('restify-routing')
-var rootRouter = new RestifyRouter(server)
+var rootRouter = new RestifyRouter()
 rootRouter.get('/', function(req, res){
     res.send(200, 'Hello world!')
 })
@@ -28,6 +28,10 @@ subRouter.get('/:username', function(req, res){
 // Build subRouter under sub-path '/user'
 // this will add restify native route map '/user/:username'
 rootRouter.use('/user', subRouter)
+
+// From version 0.3.3, endpoints will not get applied until explicitly call **applyRoutes**
+// and CAN NOT be modified anymore.
+rootRouter.applyRoutes(server)
 
 server.listen(3000)
 ```
