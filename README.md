@@ -24,7 +24,6 @@ subRouter.get('/:username', function(req, res){
     res.send(200, 'Hello ' + req.params.username)
 })
 
-    
 // Build subRouter under sub-path '/user'
 // this will add restify native route map '/user/:username'
 rootRouter.use('/user', subRouter)

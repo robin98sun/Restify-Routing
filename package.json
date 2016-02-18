@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/lyalls/Restify-Routing#readme",
   "dependencies": {
-    "restify": "^4.0.0"
+    "restify": "4.x"
   },
   "devDependencies": {
     "mocha": "^2.4.5",
