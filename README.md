@@ -23,16 +23,6 @@ var subRouter = new RestifyRouter()
 subRouter.get('/:username', function(req, res){
     res.send(200, 'Hello ' + req.params.username)
 })
-    // For things need to be done before end points,
-    // From version 0.3.*, chained handlers is supported
-    // This will insert two handlers before every end points in sequence
-    subRouter.all('/:username', function(req, res, next){
-        // something to do ...
-        next();     // remember to invoke next(), or send a response to break the callback chain
-    }, function( req, res, next){
-        // some other interesting things to do ...
-        next();
-    });
 
     
 // Build subRouter under sub-path '/user'
@@ -48,15 +38,30 @@ which is illustrated in `version 0.2.*`, also can be find in the file `tests/ind
 This module is used in `Goyoo OEM` project right now, please feel free to post issues and merge requests. 
 Enjoy.
 
+Middleware
+----------
+```javascript
+// For things need to be done before end points, typially middlewares
+// From version 0.3.*, chained handlers is supported
+// This will insert two middlewares in sequence before every end points 
+subRouter.all('/user/*', function(req, res, next){
+    // something to do ...
+    next();     // remember to invoke next(), or send a response to break the callback chain
+}, function( req, res, next){
+    // some other interesting things to do ...
+    next();
+});
+```
 
 What's new
 ==========
 
 version 0.3.*
 -------------
-1. Use `.all(path, callback, ... )` to insert callbacks before the end points in the specified routing path, just like the `.all` syntax in *Express*
-2. Actions can be chained like: `router.all('/user', cb1, cb2, cb3).get('/user', cb1, cb2).post('/service', cb) ....`
+1. Use `.all(path, callback, ... )` to set middlewares as Express style, all middleware will be invoked in sequence before the end points, just like the `.all` syntax in *Express*
+2. Actions can be chained like: `router.all('/user', middleware1, middleware2, middleware3).get('/user', cb1, cb2).post('/service', cb) ....`
 3. Support chained handlers like this: `router.get('/path', cb1, cb2, cb3)`
+4. Support `*` syntax when setting middleware: `router.all('/user/*', cb1, cb2)`
 
 version 0.2.*
 -------------
