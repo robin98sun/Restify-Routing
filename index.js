@@ -8,11 +8,13 @@ let routerPrototype = {
         if(!this.debug) return;
         console.log(mesg);
     },
-    all(pattern){
+    // Setup midware for all methods
+    all(pattern, ...cbList){
+        if(! cbList || cbList.length === 0) return this;
         let fp = pattern || '*';
         fp = fp.replace( /[\*]+/g, '*');
         if(!this.middlewares) this.middlewares = [];
-        let cbList = Array.prototype.slice.call(arguments, 1);
+        //let cbList = Array.prototype.slice.call(arguments, 1);
         let targetAction = null;
         this.middlewares.map( action => {
             if(action.pattern === fp) targetAction = action;
@@ -28,7 +30,7 @@ let routerPrototype = {
         Array.prototype.push.apply(targetAction.callbacks, cbList);
         return this;
     },
-    use(path, subRouter){
+    use(path, subRouter, ...midwares){
         subRouter.path = path;
         subRouter.server = this.server;
         subRouter.setChildrenServer(this.server);
@@ -39,6 +41,11 @@ let routerPrototype = {
         //if(this.server){
         //    subRouter.activeAll();
         //}
+
+        // Set middlewares for subRouter
+        if(midwares && midwares.length>0){
+            subRouter.all('*', midwares);
+        }
 
         return this;
     },
