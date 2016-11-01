@@ -1,6 +1,6 @@
 {
   "name": "restify-routing",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "description": "Nested routing for Restify",
   "main": "index.js",
   "scripts": {
@@ -20,9 +20,9 @@
   "author": "Lyall Sun",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lyalls/Restify-Routing/issues"
+    "url": "https://github.com/mrsunlin/Restify-Routing/issues"
   },
-  "homepage": "https://github.com/lyalls/Restify-Routing#readme",
+  "homepage": "https://github.com/mrsunlin/Restify-Routing#readme",
   "dependencies": {
   },
   "devDependencies": {
